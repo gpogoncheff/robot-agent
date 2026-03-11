@@ -55,7 +55,12 @@ void MotionController::publish_cmd(double linear_x, double angular_z) {
 }
 
 void MotionController::stop() {
-    publish_cmd(0.0, 0.0);
+    rclcpp::Rate rate(20.0);
+    for (int i = 0; i < 10; ++i) {
+        publish_cmd(0.0, 0.0);
+        rclcpp::spin_some(shared_from_this());
+        rate.sleep();
+    }
 }
 
 void MotionController::move_forward(double distance_m, double speed_mps) {
@@ -89,18 +94,25 @@ void MotionController::rotate(double angle_rad, double angular_speed_rps) {
         return;
     }
 
-    const double start_yaw = current_yaw_;
     const double direction = angle_rad >= 0.0 ? 1.0 : -1.0;
+    const double target = std::abs(angle_rad);
+
+    double accumulated = 0.0;
+    double prev_yaw = current_yaw_;
 
     rclcpp::Rate rate(20.0);
 
     while (rclcpp::ok()) {
-        const double delta = normalize_angle(current_yaw_ - start_yaw);
-        if (std::abs(delta) >= std::abs(angle_rad)) {
-            break;
-        }
         publish_cmd(0.0, direction*angular_speed_rps);
         rclcpp::spin_some(shared_from_this());
+
+        const double delta = normalize_angle(current_yaw_ - prev_yaw);
+        accumulated += std::abs(delta);
+        prev_yaw = current_yaw_;
+        if (accumulated >= target) {
+            break;
+        }
+
         rate.sleep();
     }
 
