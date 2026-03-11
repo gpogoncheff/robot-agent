@@ -11,12 +11,34 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 
-add_executable(cmd_vel_publisher src/cmd_vel_publisher.cpp)
-ament_target_dependencies(cmd_vel_publisher rclcpp geometry_msgs)
+add_library(robot_agent_lib
+  src/motion_controller.cpp
+)
+
+target_include_directories(robot_agent_lib PUBLIC include)
+
+ament_target_dependencies(robot_agent_lib
+  rclcpp
+  nav_msgs
+  geometry_msgs
+)
+
+add_executable(motion_demo src/motion_demo.cpp)
+target_link_libraries(motion_demo robot_agent_lib)
+ament_target_dependencies(motion_demo
+  rclcpp
+  nav_msgs
+  geometry_msgs
+)
 
 install(TARGETS
-  cmd_vel_publisher
+  robot_agent_lib
+  motion_demo
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY include/
+  DESTINATION include
 )
 
 if(BUILD_TESTING)

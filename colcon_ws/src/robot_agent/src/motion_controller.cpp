@@ -83,7 +83,7 @@ void MotionController::move_forward(double distance_m, double speed_mps) {
     stop();
 }
 
-void MotionController::rotate(double angle_rad, double angular_speed_rps = 0.5) {
+void MotionController::rotate(double angle_rad, double angular_speed_rps) {
     if (!odom_received_) {
         RCLCPP_WARN(this->get_logger(), "No odometry yet; cannot rotate");
         return;
@@ -105,6 +105,19 @@ void MotionController::rotate(double angle_rad, double angular_speed_rps = 0.5) 
     }
 
     stop();
+}
+
+bool MotionController::wait_for_odom(double timeout_sec) {
+    rclcpp::Rate rate(20.0);
+    const int max_iters = static_cast<int>(timeout_sec * 20.0);
+    for (int i = 0; i < max_iters; ++i) {
+        rclcpp::spin_some(shared_from_this());
+        if (odom_received_) {
+            return true;
+        }
+        rate.sleep();
+    }
+    return false;
 }
  
 }

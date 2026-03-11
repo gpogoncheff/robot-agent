@@ -15,6 +15,7 @@ class MotionController : public rclcpp::Node {
         void stop();
         void move_forward(double distance_m, double speed_mps = 0.2);
         void rotate(double angle_rad, double angular_speed_rps = 0.5);
+        bool wait_for_odom(double timeout_sec);
     private:
         void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
         void publish_cmd(double linear_x, double angular_z);
