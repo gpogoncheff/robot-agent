@@ -13,6 +13,8 @@ find_package(nav_msgs REQUIRED)
 
 add_library(robot_agent_lib
   src/motion_controller.cpp
+  src/command.cpp
+  src/command_dispatcher.cpp
 )
 
 target_include_directories(robot_agent_lib PUBLIC include)
@@ -23,9 +25,9 @@ ament_target_dependencies(robot_agent_lib
   geometry_msgs
 )
 
-add_executable(motion_demo src/motion_demo.cpp)
-target_link_libraries(motion_demo robot_agent_lib)
-ament_target_dependencies(motion_demo
+add_executable(command_demo src/command_demo.cpp)
+target_link_libraries(command_demo robot_agent_lib)
+ament_target_dependencies(command_demo
   rclcpp
   nav_msgs
   geometry_msgs
@@ -33,7 +35,7 @@ ament_target_dependencies(motion_demo
 
 install(TARGETS
   robot_agent_lib
-  motion_demo
+  command_demo
   DESTINATION lib/${PROJECT_NAME}
 )
 

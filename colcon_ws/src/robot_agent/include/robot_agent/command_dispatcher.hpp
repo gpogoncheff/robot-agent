@@ -11,7 +11,7 @@ class CommandDispatcher {
         bool execute_command(const RobotCommand& cmd);
         bool execute_plan(const RobotPlan& plan);
     private:
-        MotionController& cotroller_;
+        MotionController& controller_;
 };
 
 }
