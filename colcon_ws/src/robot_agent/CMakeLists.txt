@@ -10,15 +10,17 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 add_library(robot_agent_lib
   src/motion_controller.cpp
   src/command.cpp
   src/command_dispatcher.cpp
+  src/command_parser.cpp
 )
 
 target_include_directories(robot_agent_lib PUBLIC include)
-
+target_link_libraries(robot_agent_lib nlohmann_json::nlohmann_json)
 ament_target_dependencies(robot_agent_lib
   rclcpp
   nav_msgs
@@ -33,9 +35,18 @@ ament_target_dependencies(command_demo
   geometry_msgs
 )
 
+add_executable(file_plan_demo src/file_plan_demo.cpp)
+target_link_libraries(file_plan_demo robot_agent_lib)
+ament_target_dependencies(file_plan_demo
+  rclcpp
+  nav_msgs
+  geometry_msgs
+)
+
 install(TARGETS
   robot_agent_lib
   command_demo
+  file_plan_demo
   DESTINATION lib/${PROJECT_NAME}
 )
 
