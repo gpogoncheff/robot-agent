@@ -11,49 +11,74 @@
 namespace robot_agent {
 
 namespace {
-    CommandType parse_command_type(const std::string& action) {
-        if (action == "move_forward") {
-            return CommandType::MoveForward;
-        }
-        if (action == "rotate") {
-            return CommandType::Rotate;
-        }
-        if (action == "stop") {
-            return CommandType::Stop;
+    RobotCommand parse_tool_call(const nlohmann::json& item) {
+        if (!item.is_object()) {
+            throw std::runtime_error("Tool call must be a json object");
         }
 
-        throw std::runtime_error("Unknown action: " + action);
+        if (!item.contains("tool")) {
+            throw std::runtime_error("Tool call missing required field: tool");
+        }
+
+        if (!item.at("tool").is_string()) {
+            throw std::runtime_error("Field 'tool' must be a string");
+        }
+
+        const std::string tool = item.at("tool").get<std::string>();
+
+        if (!item.contains("arguments")) {
+            throw std::runtime_error("Tool call missing required field: arguments");
+        }
+
+        if (!item.at("arguments").is_object()) {
+            throw std::runtime_error("Arguments field must be a json object");
+        }
+
+        const auto& args = item.at("arguments");
+
+        if (tool == "move_forward") {
+            if (!args.contains("distance_m")) {
+                throw std::runtime_error("move_forward requires argument: distance_m");
+            }
+            const double distance = args.at("distance_m").get<double>();
+            return RobotCommand{CommandType::MoveForward, distance};
+        }
+
+        if (tool == "rotate") {
+            if (!args.contains("angle_rad")) {
+                throw std::runtime_error("rotate requires argument: angle_rad");
+            }
+            const double angle = args.at("angle_rad").get<double>();
+            return RobotCommand{CommandType::Rotate, angle};
+        }
+
+        if (tool == "stop") {
+            return RobotCommand{CommandType::Stop, 0.0};
+        }
+
+        throw std::runtime_error("Unkown tool: " + tool);
     }
 }
+
 
 RobotPlan CommandParser::parse_plan_json(const std::string& json_text) {
     RobotPlan plan;
 
     const auto j = nlohmann::json::parse(json_text);
 
-    if (!j.is_array()) throw std::runtime_error("Plan JSON must be an array");
-
-    for (const auto& item : j) {
-        if (!item.is_object()) {
-            throw std::runtime_error("Each plan item must be a json object");
-        }
-
-        if (!item.contains("action")) {
-            throw std::runtime_error("Plan item missing required field: action");
-        }
-
-        const std::string action = item.at("action").get<std::string>();
-        const CommandType type = parse_command_type(action);
-
-        double value = 0.0;
-        if (item.contains("value")) {
-            value = item.at("value").get<double>();
-        }
-
-        plan.push_back(RobotCommand{type, value});
+    if (j.is_object()) {
+        plan.push_back(parse_tool_call(j));
+        return plan;
     }
 
-    return plan;
+    if (j.is_array()) {
+        for (const auto& item : j) {
+            plan.push_back(parse_tool_call(item));
+        }
+        return plan;
+    }
+
+    throw std::runtime_error("Plan json ust be either an object or an array");
 }
 
 RobotPlan CommandParser::parse_plan_file(const std::string& file_path) {
