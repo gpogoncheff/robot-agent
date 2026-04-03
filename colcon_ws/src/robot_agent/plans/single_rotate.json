@@ -1,6 +1,6 @@
 {
     "tool": "rotate",
     "arguments": {
-        "distance_m": 1.57
+        "angle_rad": 1.57
     }
 }
