@@ -1,0 +1,30 @@
+[
+    {
+        "tool": "move_forward",
+        "arguments": {
+            "distance_m": 1
+        }
+    },
+    {
+        "tool": "rotate",
+        "arguments": {
+            "distance_m": 1.57
+        }
+    },
+    {
+        "tool": "move_forward",
+        "arguments": {
+            "distance_m": 0.5
+        }
+    },
+    {
+        "tool": "rotate",
+        "arguments": {
+            "distance_m": -1.57
+        }
+    },
+    {
+        "tool": "stop",
+        "arguments": {}
+    }
+]

@@ -1,0 +1,6 @@
+{
+    "tool": "move_forward",
+    "arguments": {
+        "distance_m": 1.0
+    }
+}

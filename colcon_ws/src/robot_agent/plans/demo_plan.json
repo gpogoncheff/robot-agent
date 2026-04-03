@@ -1,7 +1,0 @@
-[
-    {"action": "move_forward", "value": 1.0},
-    {"action": "rotate", "value": 1.57},
-    {"action": "move_forward", "value": 0.5},
-    {"action": "rotate", "value": -1.57},
-    {"action": "stop"}
-]

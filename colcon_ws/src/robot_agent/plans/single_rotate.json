@@ -1,0 +1,6 @@
+{
+    "tool": "rotate",
+    "arguments": {
+        "distance_m": 1.57
+    }
+}
