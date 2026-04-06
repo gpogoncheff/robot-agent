@@ -25,9 +25,15 @@ def main():
     response.raise_for_status()
 
     data = response.json()
-    text = data["content"]
+    text = str(data["content"]).strip()
+    text_lines = text.split()
+    if text_lines[0].startswith("```json"):
+        text_lines.pop(0)
+    if text_lines[-1].endswith("```"):
+        text_lines.pop(-1)
+    text = "\n".join(text_lines)
 
-    print(text.strip())
+    print(text)
 
 
 if __name__ == "__main__":

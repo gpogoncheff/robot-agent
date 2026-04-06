@@ -28,6 +28,7 @@ Output rules:
 - Output ONLY valid JSON.
 - Do not include markdown.
 - Do not include explanations.
+- Do not add any comments in your json response
 - If the command requires one action, output a single JSON object.
 - If the command requires multiple actions, output a JSON array of objects.
 - Each object must have exactly these fields:
