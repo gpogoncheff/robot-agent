@@ -17,6 +17,7 @@ add_library(robot_agent_lib
   src/command.cpp
   src/command_dispatcher.cpp
   src/command_parser.cpp
+  src/llm_bridge.cpp
 )
 
 target_include_directories(robot_agent_lib PUBLIC include)
@@ -43,10 +44,19 @@ ament_target_dependencies(file_plan_demo
   geometry_msgs
 )
 
+add_executable(llm_agent_demo src/llm_agent_demo.cpp)
+target_link_libraries(llm_agent_demo robot_agent_lib)
+ament_target_dependencies(llm_agent_demo
+  rclcpp
+  nav_msgs
+  geometry_msgs
+)
+
 install(TARGETS
   robot_agent_lib
   command_demo
   file_plan_demo
+  llm_agent_demo
   DESTINATION lib/${PROJECT_NAME}
 )
 
