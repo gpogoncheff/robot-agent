@@ -75,3 +75,56 @@ Output:
     "arguments": {}
   }
 ]
+
+User: "Drive a square"
+Output:
+[
+  {
+    "tool": "move_forward",
+    "arguments": {
+      "distance_m": 1.0
+    }
+  },
+  {
+    "tool": "rotate",
+    "arguments": {
+      "angle_rad": -1.57
+    }
+  },
+  {
+    "tool": "move_forward",
+    "arguments": {
+      "distance_m": 1.0
+    }
+  },
+  {
+    "tool": "rotate",
+    "arguments": {
+      "angle_rad": -1.57
+    }
+  },
+  {
+    "tool": "move_forward",
+    "arguments": {
+      "distance_m": 1.0
+    }
+  },
+  {
+    "tool": "rotate",
+    "arguments": {
+      "angle_rad": -1.57
+    }
+  },
+  {
+    "tool": "move_forward",
+    "arguments": {
+      "distance_m": 1.0
+    }
+  },
+  {
+    "tool": "rotate",
+    "arguments": {
+      "angle_rad": -1.57
+    }
+  }
+]

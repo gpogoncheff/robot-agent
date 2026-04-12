@@ -30,8 +30,14 @@ namespace robot_agent {
 
     bool CommandDispatcher::execute_plan(const RobotPlan& plan) {
         for (const auto& cmd : plan) {
-            if (!execute_command(cmd)) return false;
+            const bool ok = execute_command(cmd);
+            if (!ok) {
+                RCLCPP_ERROR(controller_.get_logger(), "Failed to execute command in plan, aborting");
+                controller_.stop();
+                return false;
+            }
         }
+        RCLCPP_INFO(controller_.get_logger(), "Plan execution complete");
         return true;
     }
 
