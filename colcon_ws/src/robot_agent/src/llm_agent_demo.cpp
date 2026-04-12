@@ -6,6 +6,7 @@
 
 #include "robot_agent/command_dispatcher.hpp"
 #include "robot_agent/command_parser.hpp"
+#include "robot_agent/plan_validator.hpp"
 #include "robot_agent/motion_controller.hpp"
 #include "robot_agent/llm_bridge.hpp"
 
@@ -41,6 +42,10 @@ int main(int argc, char** argv) {
         const robot_agent::RobotPlan plan = robot_agent::CommandParser::parse_plan_json(json_text);
 
         RCLCPP_INFO(node->get_logger(), "Parsed plan with %zu step(s)", plan.size());
+
+        robot_agent::PlanValidator::validate_plan(plan);
+
+        RCLCPP_INFO(node->get_logger(), "Plan validation passed");
 
         const bool ok = dispatcher.execute_plan(plan);
         if (!ok) {

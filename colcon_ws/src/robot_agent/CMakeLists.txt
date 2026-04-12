@@ -17,6 +17,7 @@ add_library(robot_agent_lib
   src/command.cpp
   src/command_dispatcher.cpp
   src/command_parser.cpp
+  src/plan_validator.cpp
   src/llm_bridge.cpp
 )
 

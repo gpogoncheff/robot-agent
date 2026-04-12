@@ -4,6 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "robot_agent/command_parser.hpp"
+#include "robot_agent/plan_validator.hpp"
 #include "robot_agent/command_dispatcher.hpp"
 #include "robot_agent/motion_controller.hpp"
 
@@ -33,13 +34,17 @@ int main(int argc, char** argv) {
         const robot_agent::RobotPlan plan =
             robot_agent::CommandParser::parse_plan_file(plan_path);
 
-            const bool ok = dispatcher.execute_plan(plan);
+        robot_agent::PlanValidator::validate_plan(plan);
 
-            if (!ok) {
-                RCLCPP_ERROR(node->get_logger(), "Plan execution failed");
-                rclcpp::shutdown();
-                return 1;
-            }
+        RCLCPP_INFO(node->get_logger(), "Plan validated");
+
+        const bool ok = dispatcher.execute_plan(plan);
+
+        if (!ok) {
+            RCLCPP_ERROR(node->get_logger(), "Plan execution failed");
+            rclcpp::shutdown();
+            return 1;
+        }
     } catch (const std::exception& e) {
         RCLCPP_ERROR(node->get_logger(), "Failed to load or execute plan: %s", e.what());
         rclcpp::shutdown();
