@@ -1,0 +1,20 @@
+[
+    {
+        "tool": "get_pose",
+        "arguments": {}
+    },
+    {
+        "tool": "move_forward",
+        "arguments": {
+            "distance_m": 1.0
+        }
+    },
+    {
+        "tool": "stop",
+        "arguments": {}
+    },
+    {
+        "tool": "get_pose",
+        "arguments": {}
+    }
+]

@@ -10,6 +10,8 @@ std::string to_string(CommandType type) {
             return "Rotate";
         case CommandType::Stop:
             return "Stop";
+        case CommandType::GetPose:
+            return "GetPose";
         default:
             return "Unknown";
     }

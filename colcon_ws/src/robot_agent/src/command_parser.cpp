@@ -56,6 +56,10 @@ namespace {
             return RobotCommand{CommandType::Stop, 0.0};
         }
 
+        if (tool == "get_pose") {
+            return RobotCommand{CommandType::GetPose, 0.0};
+        }
+
         throw std::runtime_error("Unkown tool: " + tool);
     }
 }

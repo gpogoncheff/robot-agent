@@ -9,12 +9,22 @@
 
 namespace robot_agent {
 
+struct RobotPose {
+    double x;
+    double y;
+    double yaw;
+};
+
 class MotionController : public rclcpp::Node {
     public:
         MotionController();
+
         void stop();
         void move_forward(double distance_m, double speed_mps = 0.2);
         void rotate(double angle_rad, double angular_speed_rps = 0.5);
+
+        RobotPose get_pose() const;
+
         bool wait_for_odom(double timeout_sec);
     private:
         void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg);

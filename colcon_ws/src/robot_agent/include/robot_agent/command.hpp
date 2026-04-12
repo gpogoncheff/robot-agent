@@ -8,7 +8,8 @@ namespace robot_agent {
 enum class CommandType {
     MoveForward,
     Rotate,
-    Stop
+    Stop,
+    GetPose
 };
 
 struct RobotCommand {

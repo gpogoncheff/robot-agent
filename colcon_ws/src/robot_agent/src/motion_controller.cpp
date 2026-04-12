@@ -131,5 +131,9 @@ bool MotionController::wait_for_odom(double timeout_sec) {
     }
     return false;
 }
+
+RobotPose MotionController::get_pose() const {
+    return RobotPose{current_x_, current_y_, current_yaw_};
+}
  
 }

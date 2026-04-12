@@ -22,6 +22,15 @@ namespace robot_agent {
             case CommandType::Stop:
                 controller_.stop();
                 return true;
+            case CommandType::GetPose: {
+                const RobotPose pose = controller_.get_pose();
+                RCLCPP_INFO(
+                    controller_.get_logger(),
+                    "Current pose: x=%.3f, y=%.3f, yaw=%.3f",
+                    pose.x, pose.y, pose.yaw
+                );
+                return true;
+            }
             default:
                 RCLCPP_ERROR(controller_.get_logger(), "Unkown command type received by dispatcher");
                 return false;

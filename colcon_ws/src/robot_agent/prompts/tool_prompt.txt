@@ -24,6 +24,12 @@ Available tools:
    meaning:
      Stop robot motion.
 
+4. get_pose
+   arguments:
+     - none
+   meaning:
+     Return the robot pose as x, y, and yaw.
+
 Output rules:
 - Output ONLY valid JSON.
 - Do not include markdown.
@@ -126,5 +132,25 @@ Output:
     "arguments": {
       "angle_rad": -1.57
     }
+  }
+]
+
+User: "What is the robot's current pose?"
+Output:
+{
+  "tool": "get_pose",
+  "arguments": {}
+}
+
+User: "Get the pose and then stop"
+Output:
+[
+  {
+    "tool": "get_pose",
+    "arguments": {}
+  },
+  {
+    "tool": "stop",
+    "arguments": {}
   }
 ]
