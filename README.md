@@ -7,3 +7,4 @@ Readme to include:
 - example commands
 - limitations
 - next steps
+- connecting with actual hardware?
